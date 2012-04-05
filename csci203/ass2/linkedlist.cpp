@@ -7,78 +7,73 @@ linkedlist::linkedlist()
 {
     head = NULL;
     listLength = 0;
+    totalFillWaitingTime = 0;
+    totalPayWaitingTime = 0;
+    idleTime = 0;
 }
 
-string linkedlist::getUid(int pos)
+
+int linkedlist::getArrTime(int pos)
 {
     node * target = getNode(pos);
-    return target->uid;
+    return target->arrTime;
 }
-string linkedlist::getPid(int pos)
+char linkedlist::getFuelType(int pos)
 {
     node * target = getNode(pos);
-    return target->pid;
+    return target->fuelType;
 }
-string linkedlist::linkedlist::getPpid(int pos)
+int linkedlist::linkedlist::getFillTime(int pos)
 {
     node * target = getNode(pos);
-    return target->ppid;
+    return target->fillTime;
 }
-string linkedlist::getStime(int pos)
+int linkedlist::getPayTime(int pos)
 {
     node * target = getNode(pos);
-    return target->stime;
-}
-string linkedlist::getTty(int pos)
-{
-    node * target = getNode(pos);
-    return target->tty;
-}
-string linkedlist::getTime(int pos)
-{
-    node * target = getNode(pos);
-    return target->time;
-}
-string linkedlist::getCmd(int pos)
-{
-    node * target = getNode(pos);
-    return target->cmd;
+    return target->payTime;
 }
 
-void linkedlist::setUid(int pos, string aUid)
+char linkedlist::getStatus(int pos)
 {
     node * target = getNode(pos);
-    target->uid = aUid;
+    return target->status;
 }
-void linkedlist::setPid(int pos, string aPid)
+int linkedlist::getPumpNo(int pos)
 {
     node * target = getNode(pos);
-    target->pid = aPid;
+    return target->pumpNo;    
 }
-void linkedlist::setPpid(int pos, string aPpid)
+
+void linkedlist::setArrTime(int pos, int anArrTime)
 {
     node * target = getNode(pos);
-    target->ppid = aPpid;
+    target->arrTime = anArrTime;
 }
-void linkedlist::setStime(int pos, string aStime)
+void linkedlist::setFuelType(int pos, char aFuelType)
 {
     node * target = getNode(pos);
-    target->stime = aStime;
+    target->fuelType = aFuelType;
 }
-void linkedlist::linkedlist::setTty(int pos, string aTty)
+void linkedlist::setFillTime(int pos, int aFillTime)
 {
     node * target = getNode(pos);
-    target->tty = aTty;
+    target->fillTime = aFillTime;
 }
-void linkedlist::setTime(int pos, string aTime)
+void linkedlist::setPayTime(int pos, int aPayTime)
 {
     node * target = getNode(pos);
-    target->time = aTime;
+    target->payTime = aPayTime;
 }
-void linkedlist::setCmd(int pos, string aCmd)
+void linkedlist::setStatus(int pos, char aStatus)
 {
     node * target = getNode(pos);
-    target->cmd = aCmd;
+    target->status = aStatus;
+}
+void linkedlist::setPumpNo(int pos, int aPumpNo)
+{
+    node * target = getNode(pos);
+    target->pumpNo = aPumpNo;  
 }
 
 bool linkedlist::isEmpty()
@@ -94,16 +89,59 @@ int linkedlist::getLength()
 {
     return listLength;
 }
-void linkedlist::appendNode(string aUid, string aPid, string aPpid, string aStime, string aTty, string aTime, string aCmd)
+
+bool linkedlist::isPaying()
+{
+    if (listLength == 0)
+    {
+        return false;
+    }
+    else
+    {
+        if (head->status == 'P' || head->status == 'Q')
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int linkedlist::getTotalFillWaitingTime()
+{
+    return totalFillWaitingTime;
+}
+
+int linkedlist::getTotalPayWaitingTime()
+{
+    return totalPayWaitingTime;
+}
+
+int linkedlist::getIdleTime()
+{
+    return idleTime;
+}
+
+void linkedlist::setTotalFillWaitingTime()
+{
+
+}
+
+void linkedlist::setTotalPayWaitingTime()
+{
+
+}
+
+
+
+void linkedlist::appendNode(int anArrTime, char aFuelType, int aFillTime, int aPayTime, int aStatus, int aPumpNo)
 {
     node * newNode = new node;
-    newNode->uid = aUid;
-    newNode->pid = aPid;
-    newNode->ppid = aPpid;
-    newNode->stime = aStime;
-    newNode->tty = aTty;
-    newNode->time = aTime;
-    newNode->cmd = aCmd;
+    newNode->arrTime = anArrTime;
+    newNode->fuelType = aFuelType;
+    newNode->fillTime = aFillTime;
+    newNode->payTime = aPayTime;
+    newNode->status = aStatus;
+    newNode->pumpNo = aPumpNo;
     newNode->next = NULL;
     if (head == NULL)
     {
@@ -116,6 +154,34 @@ void linkedlist::appendNode(string aUid, string aPid, string aPpid, string aStim
     }
     listLength++;
 }
+
+void linkedlist::deleteNode(int pos)
+{
+    if (listLength == 1)
+    {
+        head = NULL;
+        listLength = 0;
+    }
+    else if (listLength > 1)
+    {
+        node * deleteTarget = (getNode(pos));
+        if (pos == 0)
+        {
+            head = head->next;
+        }
+        else if (pos == listLength - 1)
+        {
+            (getNode(pos-1))->next = NULL;
+        }
+        else
+        {
+            (getNode(pos-1))->next = deleteTarget->next;
+        }
+        delete deleteTarget;
+        listLength--;
+    }
+}
+
 
 node * linkedlist::getNode(int pos)
 {
@@ -142,7 +208,7 @@ void linkedlist::clearList()
                 head->next = deleteTarget->next;
                 delete deleteTarget;
             }
-            head == NULL;
+            head = NULL;
         }
         listLength = 0;
     }

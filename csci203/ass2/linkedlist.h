@@ -4,15 +4,14 @@ using namespace std;
 #ifndef linkedlist_H
 #define linkedlist_H
 
-struct node
+struct node //car
 {
-    string uid;
-    string pid;
-    string ppid;
-    string stime;
-    string tty;
-    string time;
-    string cmd;
+    int arrTime; //in seconds
+    char fuelType;
+    int fillTime;
+    int payTime;
+    char status;//P--paying, F--filling, W--waiting to fill, Q--leave to pay, A--just arrived, initial status
+    int pumpNo;  
     node * next;
 };
 
@@ -21,28 +20,36 @@ class linkedlist
     private:
         node * head;
         int listLength;
+        int totalFillWaitingTime;
+        int totalPayWaitingTime;
+        int idleTime;
     public:
         linkedlist();
 
-        string getUid(int pos);
-        string getPid(int pos);
-        string getPpid(int pos);
-        string getStime(int pos);
-        string getTty(int pos);
-        string getTime(int pos);
-        string getCmd(int pos);
+        int getArrTime(int pos);
+        char getFuelType(int pos);
+        int getFillTime(int pos);
+        int getPayTime(int pos);
+        char getStatus(int pos);
+        int getPumpNo(int pos);
 
-        void setUid(int pos, string aUid);
-        void setPid(int pos, string aPid);
-        void setPpid(int pos, string aPpid);
-        void setStime(int pos, string aStime);
-        void setTty(int pos, string aTty);
-        void setTime(int pos, string aTime);
-        void setCmd(int pos, string aCmd);
+        void setArrTime(int pos, int anArrTime);
+        void setFuelType(int pos, char aFuelType);
+        void setFillTime(int pos, int aFillTime);
+        void setPayTime(int pos, int aPayTime);
+        void setStatus(int pos, char aStatus);
+        void setPumpNo(int pos, int aPumpNo);
 
         bool isEmpty();
         int getLength();
-        void appendNode(string aUid, string aPid, string aPpid, string aStime, string aTty, string aTime, string aCmd);
+        bool isPaying();
+        int getTotalFillWaitingTime();
+        int getTotalPayWaitingTime();
+        int getIdleTime();
+        void setTotalFillWaitingTime();
+        void setTotalPayWaitingTime();
+        void appendNode(int anArrTime, char aFuelType, int aFillTime, int aPayTime, int aStatus, int aPumpNo);
+        void deleteNode(int pos);
         node * getNode(int pos);
         void clearList();
 };
